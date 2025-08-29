@@ -29,4 +29,11 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    [HttpPost("GetExample")]
+    public string GetExample([FromBody] string name)
+    {
+        return $"Hello {name}!";
+
+    }
 }

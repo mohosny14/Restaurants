@@ -4,3 +4,9 @@ GET {{Restaurants.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{Restaurants.API_HostAddress}}/weatherforecast/GetExample
+Content-Type: application/json
+"Hosny"
+
+###
