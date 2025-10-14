@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurants.Infrastructure.Seeders;
 
 namespace Restaurants.Infrastructure.Persistence
 {
@@ -15,9 +16,11 @@ namespace Restaurants.Infrastructure.Persistence
         {
             services.AddDbContext<RestaurantsDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            return services;
 
-            //services.AddScoped<IR>
+
+            services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
+
+            return services;
         }
     }
 }

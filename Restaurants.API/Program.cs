@@ -1,16 +1,20 @@
 using Restaurants.Infrastructure.Persistence;
+using Restaurants.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+#region Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-//builder.Services.AddDbContext<RestaurantsDbContext>(o =>
-//    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+#endregion
 
 var app = builder.Build();
+
+#region Seeding Database
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<IRestaurantSeeder>();
+await seeder.SeedAsync();
+#endregion
 
 // Configure the HTTP request pipeline.
 

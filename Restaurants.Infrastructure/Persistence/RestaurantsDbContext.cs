@@ -3,12 +3,12 @@ using Restaurants.Domain.Entities;
 
 namespace Restaurants.Infrastructure.Persistence
 {
-    public class RestaurantsDbContext : DbContext
+    public class RestaurantsDbContext(DbContextOptions<RestaurantsDbContext> options) : DbContext(options)
     {
+        //// used primary constructor syntax available in C# 12 and .NET 8 
+        //public RestaurantsDbContext(DbContextOptions<RestaurantsDbContext> options) : base(options) { }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-
-        public RestaurantsDbContext(DbContextOptions<RestaurantsDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
