@@ -1,11 +1,13 @@
-using Restaurants.Infrastructure.Persistence;
+using Restaurants.Infrastructure.Extensions;
 using Restaurants.Infrastructure.Seeders;
+using Restaurants.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 #endregion
 
 var app = builder.Build();

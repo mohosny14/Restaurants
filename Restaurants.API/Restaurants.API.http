@@ -1,12 +1,7 @@
 @Restaurants.API_HostAddress = http://localhost:5119
 
-GET {{Restaurants.API_HostAddress}}/weatherforecast/
-Accept: application/json
+### Get all restaurants
+GET {{Restaurants.API_HostAddress}}/api/restaurants
 
-###
-
-POST {{Restaurants.API_HostAddress}}/weatherforecast/GetExample
-Content-Type: application/json
-"Hosny"
-
-###
+### Get a specific restaurant by ID
+GET {{Restaurants.API_HostAddress}}/api/restaurants/1

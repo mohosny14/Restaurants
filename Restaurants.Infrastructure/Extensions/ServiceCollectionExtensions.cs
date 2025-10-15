@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurants.Domain.IRepositories;
+using Restaurants.Infrastructure.Persistence;
+using Restaurants.Infrastructure.Repositories;
 using Restaurants.Infrastructure.Seeders;
 
-namespace Restaurants.Infrastructure.Persistence
+namespace Restaurants.Infrastructure.Extensions
 {
-    public static class DependencyInjection
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
@@ -19,6 +17,7 @@ namespace Restaurants.Infrastructure.Persistence
 
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
+            services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
 
             return services;
         }
