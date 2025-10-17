@@ -15,7 +15,7 @@ namespace Restaurants.Infrastructure.Repositories
         public async Task<IEnumerable<Restaurant>> GetAllRestaurants()
         {
             var restaurants = await _dbContext.Restaurants
-                .Include(r => r.Address)
+                //.Include(r => r.Address)
                 .Include(r => r.Dishes)
                 .ToListAsync();
 
@@ -25,7 +25,7 @@ namespace Restaurants.Infrastructure.Repositories
         public async Task<Restaurant> GetRestaurantById()
         {
             var restaurant = await _dbContext.Restaurants
-                .Include(r => r.Address)
+                //.Include(r => r.Address)
                 .Include(r => r.Dishes)
                 .FirstOrDefaultAsync();
             return restaurant!;

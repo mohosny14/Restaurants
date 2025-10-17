@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Restaurants.Application.Dtos;
 using Restaurants.Application.IServices;
-using Restaurants.Domain.Entities;
 using Restaurants.Domain.IRepositories;
 
 namespace Restaurants.Application.Services
@@ -15,17 +15,24 @@ namespace Restaurants.Application.Services
             _restaurantsRepository = restaurantsRepository;
             _logger = logger;
         }
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurants()
+        public async Task<IEnumerable<RestaurantDto>> GetAllRestaurants()
         {
             _logger.LogInformation("Getting All Restaurants...");
             var restaurants = await _restaurantsRepository.GetAllRestaurants();
-            return restaurants;
-        }
 
-        public async Task<Restaurant> GetRestaurantById()
+            var restaurantDtos = restaurants.Select(RestaurantDto.MapRestaurantToDto).ToList();
+
+            if (!restaurantDtos.Any())
+            {
+                _logger.LogWarning("No restaurants found.");
+            }
+            return restaurantDtos!;
+        }
+        public async Task<RestaurantDto> GetRestaurantById()
         {
-           var restaurant = await _restaurantsRepository.GetRestaurantById();
-              return restaurant;
+            var restaurant = await _restaurantsRepository.GetRestaurantById();
+            var restaurantDto = RestaurantDto.MapRestaurantToDto(restaurant);
+            return restaurantDto!;
         }
     }
 }

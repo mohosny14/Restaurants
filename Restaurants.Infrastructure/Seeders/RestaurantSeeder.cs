@@ -31,65 +31,90 @@ namespace Restaurants.Infrastructure.Seeders
                 {
                     Name = "Italian Bistro",
                     Category = "Italian",
-                    Descritpion = "Cozy place for authentic Italian cuisine.",
+                    Description = "Cozy place for authentic Italian cuisine.",
                     HasDelivery = true,
                     ContactEmail = "mo@mo.com",
+                    Address = new Address
+                    {
+                        City = "New York",
+                        Street = "123 Pasta",
+                    },
                     Dishes = new List<Dish>
                     {
-                        new Dish { Name = "Spaghetti Carbonara", Price = 12.99m, Descritpion = "Classic Roman pasta with eggs, cheese, pancetta." },
-                        new Dish { Name = "Margherita Pizza", Price = 10.99m, Descritpion = "Traditional pizza with tomato, mozzarella, and basil." }
+                        new Dish { Name = "Spaghetti Carbonara", Price = 12.99m, Description= "Classic Roman pasta with eggs, cheese, pancetta." },
+                        new Dish { Name = "Margherita Pizza", Price = 10.99m, Description = "Traditional pizza with tomato, mozzarella, and basil." }
                     },
                 },
                 new Restaurant
                 {
                     Name = "Sushi House",
                     Category = "Japanese",
-                    Descritpion = "Fresh sushi and sashimi prepared by expert chefs.",
+                    Description = "Fresh sushi and sashimi prepared by expert chefs.",
                     HasDelivery = false,
                     ContactEmail = "info@sushihouse.com",
+                    Address = new Address
+                    {
+                        City = "San Francisco",
+                        Street = "456 Sashimi Ave",
+                    },
                     Dishes = new List<Dish>
                     {
-                        new Dish { Name = "Salmon Nigiri", Price = 4.99m, Descritpion = "Sliced salmon over rice." },
-                        new Dish { Name = "California Roll", Price = 7.99m, Descritpion = "Crab, avocado, and cucumber roll." }
+                        new Dish { Name = "Salmon Nigiri", Price = 4.99m, Description = "Sliced salmon over rice." },
+                        new Dish { Name = "California Roll", Price = 7.99m, Description = "Crab, avocado, and cucumber roll." }
                     },
                 },
                 new Restaurant
                 {
                     Name = "Burger Joint",
                     Category = "American",
-                    Descritpion = "Classic and gourmet burgers with a variety of sides.",
+                    Description = "Classic and gourmet burgers with a variety of sides.",
                     HasDelivery = true,
                     ContactEmail = "contact@burgerjoint.com",
+                    Address = new Address
+                    {
+                        City = "Chicago",
+                        Street = "789 Burger Blvd",
+                    },
                     Dishes = new List<Dish>
                     {
-                        new Dish { Name = "Cheeseburger", Price = 8.99m, Descritpion = "Beef patty with cheddar cheese, lettuce, and tomato." },
-                        new Dish { Name = "Veggie Burger", Price = 9.49m, Descritpion = "Grilled vegetable patty with fresh toppings." }
+                        new Dish { Name = "Cheeseburger", Price = 8.99m, Description = "Beef patty with cheddar cheese, lettuce, and tomato." },
+                        new Dish { Name = "Veggie Burger", Price = 9.49m, Description = "Grilled vegetable patty with fresh toppings." }
                     },
                 },
                 new Restaurant
                 {
                     Name = "Taco Fiesta",
                     Category = "Mexican",
-                    Descritpion = "Authentic Mexican tacos and street food.",
+                    Description = "Authentic Mexican tacos and street food.",
                     HasDelivery = false,
                     ContactEmail = "hello@tacofiesta.com",
+                    Address = new Address
+                    {
+                        City = "Los Angeles",
+                        Street = "321 Taco St",
+                    },
                     Dishes = new List<Dish>
                     {
-                        new Dish { Name = "Chicken Tacos", Price = 6.99m, Descritpion = "Soft tortillas filled with seasoned chicken." },
-                        new Dish { Name = "Beef Quesadilla", Price = 7.99m, Descritpion = "Grilled tortilla stuffed with beef and cheese." }
+                        new Dish { Name = "Chicken Tacos", Price = 6.99m, Description = "Soft tortillas filled with seasoned chicken." },
+                        new Dish { Name = "Beef Quesadilla", Price = 7.99m, Description = "Grilled tortilla stuffed with beef and cheese." }
                     },
                 },
                 new Restaurant
                 {
                     Name = "Curry Palace",
                     Category = "Indian",
-                    Descritpion = "Rich and flavorful Indian curries and breads.",
+                    Description = "Rich and flavorful Indian curries and breads.",
                     HasDelivery = true,
                     ContactEmail = "order@currypalace.com",
+                    Address = new Address
+                    {
+                        City = "Houston",
+                        Street = "654 Curry",
+                    },
                     Dishes = new List<Dish>
                     {
-                        new Dish { Name = "Butter Chicken", Price = 13.99m, Descritpion = "Creamy tomato-based chicken curry." },
-                        new Dish { Name = "Paneer Tikka Masala", Price = 12.49m, Descritpion = "Grilled paneer in spicy masala sauce." }
+                        new Dish { Name = "Butter Chicken", Price = 13.99m, Description = "Creamy tomato-based chicken curry." },
+                        new Dish { Name = "Paneer Tikka Masala", Price = 12.49m, Description = "Grilled paneer in spicy masala sauce." }
                     },
                 }
             };
