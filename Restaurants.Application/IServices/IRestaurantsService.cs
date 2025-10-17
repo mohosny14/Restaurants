@@ -1,4 +1,5 @@
 ﻿using Restaurants.Application.Dtos;
+using Restaurants.Application.Dtos.Restaurant;
 
 namespace Restaurants.Application.IServices
 {
@@ -6,5 +7,6 @@ namespace Restaurants.Application.IServices
     {
         public Task<IEnumerable<RestaurantDto>> GetAllRestaurants();
         public Task<RestaurantDto> GetRestaurantById();
+        public Task<int> CreateRestaurant(CreateRestaurantDto createRestaurantDto);
     }
 }

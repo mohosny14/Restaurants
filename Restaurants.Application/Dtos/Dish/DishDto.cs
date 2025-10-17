@@ -1,6 +1,7 @@
-﻿using Restaurants.Domain.Entities;
+﻿using Restaurants.Application.Dtos.Dish;
+using Restaurants.Domain.Entities;
 
-namespace Restaurants.Application.Dtos
+namespace Restaurants.Application
 {
     public class DishDto
     {
@@ -18,6 +19,17 @@ namespace Restaurants.Application.Dtos
                 Description = restaurant.Description,
                 Price = restaurant.Price,
                 KiloCalories = restaurant.KiloCalories
+            };
+        }
+
+        public static Dish MapCreateDtoToDish(CreateDishDto dto)
+        {
+            return new Dish
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Price = dto.Price,
+                KiloCalories = dto.KiloCalories
             };
         }
     }

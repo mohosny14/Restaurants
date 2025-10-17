@@ -5,3 +5,30 @@ GET {{Restaurants.API_HostAddress}}/api/restaurants
 
 ### Get a specific restaurant by ID
 GET {{Restaurants.API_HostAddress}}/api/restaurants/1
+
+### Create a new restaurant
+POST {{Restaurants.API_HostAddress}}/api/restaurants
+Content-Type: application/json
+{
+  "Name": "Italian Bistro",
+  "Category": "Italianssss",
+  "Description": "Cozy place for authentic Italian cuisine.",
+  "HasDelivery": true,
+  "ContactEmail": "mo",
+  "ContactNumber": "123-456-7890",
+  "City": "New York",
+  "Street": "123 Pasta",
+  "PostalCode": "1002201",
+  "Dishes": [
+    {
+      "Name": "Spaghetti Carbonara",
+      "Price": 12.99,
+      "Description": "Classic Roman pasta with eggs, cheese, pancetta."
+    },
+    {
+      "Name": "Margherita Pizza",
+      "Price": 10.99,
+      "Description": "Traditional pizza with tomato, mozzarella, and basil."
+    }
+  ]
+}

@@ -12,6 +12,14 @@ namespace Restaurants.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public async Task<int> CreateRestaurant(Restaurant restaurant)
+        {
+            _dbContext.Restaurants.Add(restaurant);
+            await _dbContext.SaveChangesAsync();
+            return restaurant.Id;
+        }
+
         public async Task<IEnumerable<Restaurant>> GetAllRestaurants()
         {
             var restaurants = await _dbContext.Restaurants

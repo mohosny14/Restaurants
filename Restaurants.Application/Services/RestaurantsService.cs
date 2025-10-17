@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Restaurants.Application.Dtos;
+using Restaurants.Application.Dtos.Restaurant;
 using Restaurants.Application.IServices;
 using Restaurants.Domain.IRepositories;
 
@@ -15,6 +16,13 @@ namespace Restaurants.Application.Services
             _restaurantsRepository = restaurantsRepository;
             _logger = logger;
         }
+
+        public Task<int> CreateRestaurant(CreateRestaurantDto createRestaurantDto)
+        {
+            var restaurant = RestaurantDto.MapCreateDtoToRestaurant(createRestaurantDto);
+            return _restaurantsRepository.CreateRestaurant(restaurant);
+        }
+
         public async Task<IEnumerable<RestaurantDto>> GetAllRestaurants()
         {
             _logger.LogInformation("Getting All Restaurants...");
