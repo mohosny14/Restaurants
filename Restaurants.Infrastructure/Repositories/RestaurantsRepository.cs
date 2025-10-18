@@ -30,10 +30,11 @@ namespace Restaurants.Infrastructure.Repositories
             return restaurants;
         }
 
-        public async Task<Restaurant> GetRestaurantById()
+        public async Task<Restaurant> GetRestaurantById(int id)
         {
             var restaurant = await _dbContext.Restaurants
                 //.Include(r => r.Address)
+                .Where(r => r.Id == id)
                 .Include(r => r.Dishes)
                 .FirstOrDefaultAsync();
             return restaurant!;

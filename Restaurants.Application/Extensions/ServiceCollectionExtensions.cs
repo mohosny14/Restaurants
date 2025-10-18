@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Restaurants.Application.IServices;
-using Restaurants.Application.Services;
 using FluentValidation;
-using Restaurants.Application.Validators;
 using FluentValidation.AspNetCore;
 
 namespace Restaurants.Application.Extensions
@@ -12,7 +9,9 @@ namespace Restaurants.Application.Extensions
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
-            services.AddScoped<IRestaurantsService, RestaurantsService>();
+
+            // Register AddMediatR handlers from the current assembly
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
             services.AddValidatorsFromAssembly(assembly)
                 .AddFluentValidationAutoValidation();
