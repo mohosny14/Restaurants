@@ -39,5 +39,22 @@ namespace Restaurants.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
             return restaurant!;
         }
+        public async Task<bool> DeleteRestaurant(int id)
+        {
+            var restaurant = await _dbContext.Restaurants.FindAsync(id);
+            if (restaurant == null)
+                return false;
+            _dbContext.Restaurants.Remove(restaurant);
+            var isDeleted = await _dbContext.SaveChangesAsync();
+
+            return isDeleted > 0;
+        }
+
+        public async Task<bool> UpdateRestaurant(Restaurant restaurant)
+        {
+            _dbContext.Restaurants.Update(restaurant);
+            var isUpdated = await _dbContext.SaveChangesAsync();
+            return isUpdated > 0;
+        }
     }
 }

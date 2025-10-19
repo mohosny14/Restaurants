@@ -4,7 +4,7 @@
 GET {{Restaurants.API_HostAddress}}/api/restaurants
 
 ### Get a specific restaurant by ID
-GET {{Restaurants.API_HostAddress}}/api/restaurants/6
+GET {{Restaurants.API_HostAddress}}/api/restaurants/13
 
 ### Create a new restaurant
 POST {{Restaurants.API_HostAddress}}/api/restaurants
@@ -23,12 +23,49 @@ Content-Type: application/json
     {
       "Name": "Spaghetti Carbonara",
       "Price": 12.99,
-      "Description": "Classic Roman pasta with eggs, cheese, pancetta."
+      "Description": "Classic Roman pasta with eggs, cheese, pancetta.",
+      "kiloCalories": 220
     },
     {
       "Name": "Margherita Pizza",
       "Price": 10.99,
-      "Description": "Traditional pizza with tomato, mozzarella, and basil."
+      "Description": "Traditional pizza with tomato, mozzarella, and basil.",
+      "kiloCalories": 330
     }
+  ]
+}
+
+### Delete a restaurant by ID
+DELETE {{Restaurants.API_HostAddress}}/api/restaurants/12
+
+  ### Update a restaurant by ID
+PATCH {{Restaurants.API_HostAddress}}/api/restaurants/
+Content-Type: application/json
+{
+  "Id": 13,
+  "Name": "Updated Restaurant Name 2",
+  "Category": "Updated Category",
+  "Description": "Updated description of the restaurant. 2",
+  "HasDelivery": false,
+  "ContactEmail": "mo22@mo.com",
+  "ContactNumber": "01248645973",
+  "City": "Updated City",
+  "Street": "456 Updated St",
+  "PostalCode": "54321",
+    "dishes": [
+    {
+        "id": 15,
+        "name": "Spaghetti Carbonara",
+        "description": "Classic Roman pasta with eggs, cheese, pancetta.",
+        "price": 12.99,
+        "kiloCalories": 220
+    },
+    {
+        "id": 16,
+        "name": "Margherita Pizza",
+        "description": "Traditional pizza with tomato, mozzarella, and basil.",
+        "price": 10.99,
+        "kiloCalories": 330
+}
   ]
 }

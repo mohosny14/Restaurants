@@ -7,5 +7,7 @@ namespace Restaurants.Domain.IRepositories
         public Task<IEnumerable<Restaurant>> GetAllRestaurants();
         public Task<Restaurant> GetRestaurantById(int id);
         public Task<int> CreateRestaurant(Restaurant restaurant);
+        public Task<bool> DeleteRestaurant(int id);
+        public Task<bool> UpdateRestaurant(Restaurant restaurant);
     }
 }
