@@ -1,6 +1,7 @@
 using Restaurants.Infrastructure.Extensions;
 using Restaurants.Infrastructure.Seeders;
 using Restaurants.Application.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Host.UseSerilog((context ,configuration) =>
+        configuration
+            .ReadFrom.Configuration(context.Configuration));
+    
+   // );
 #endregion
 
 var app = builder.Build();
@@ -18,6 +24,7 @@ var seeder = scope.ServiceProvider.GetRequiredService<IRestaurantSeeder>();
 await seeder.SeedAsync();
 #endregion
 
+app.UseSerilogRequestLogging();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
