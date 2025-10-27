@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Restaurants.Application;
 using Restaurants.Application.Restaurants.Commands.CreateRestaurant;
 using Restaurants.Application.Restaurants.Commands.DeleteRestaurant;
 using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
@@ -30,7 +31,7 @@ namespace Restaurants.API.Controllers
             return Ok(restaurants);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<ActionResult<RestaurantDto?>> GetById([FromRoute] int id)
         {
             var restaurant = await _mediator.Send(new GetRestaurantByIdQuery(id));
             if (restaurant == null)
