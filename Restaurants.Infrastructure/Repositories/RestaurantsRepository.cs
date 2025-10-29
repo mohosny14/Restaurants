@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Restaurants.Domain.Entities;
+using Restaurants.Domain.Exceptions;
 using Restaurants.Domain.IRepositories;
 using Restaurants.Infrastructure.Persistence;
 
@@ -39,11 +40,8 @@ namespace Restaurants.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
             return restaurant!;
         }
-        public async Task<bool> DeleteRestaurant(int id)
+        public async Task<bool> DeleteRestaurant(Restaurant restaurant)
         {
-            var restaurant = await _dbContext.Restaurants.FindAsync(id);
-            if (restaurant == null)
-                return false;
             _dbContext.Restaurants.Remove(restaurant);
             var isDeleted = await _dbContext.SaveChangesAsync();
 

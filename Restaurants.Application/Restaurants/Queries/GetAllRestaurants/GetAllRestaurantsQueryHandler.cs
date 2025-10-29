@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using Restaurants.Domain.Entities;
+using Restaurants.Domain.Exceptions;
 using Restaurants.Domain.IRepositories;
 
 namespace Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
@@ -23,6 +25,7 @@ public class GetAllRestaurantsQueryHandler : IRequestHandler<GetAllRestaurantsQu
         if (!restaurantDtos.Any())
         {
             _logger.LogWarning("No restaurants found.");
+            throw new NotFoundException(nameof(Restaurant), "All");
         }
         return restaurantDtos!;
     }
