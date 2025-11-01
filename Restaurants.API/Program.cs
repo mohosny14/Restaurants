@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 #region Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ErrorHandlingMiddle>();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddScoped<RequestTimeLoggingMiddleware>();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Host.UseSerilog((context ,configuration) =>
@@ -28,7 +29,8 @@ await seeder.SeedAsync();
 #endregion
 
 // Configure Middleware as first one in the pipeline
-app.UseMiddleware<ErrorHandlingMiddle>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<RequestTimeLoggingMiddleware>();
 
 app.UseSerilogRequestLogging();
 if (app.Environment.IsDevelopment())
