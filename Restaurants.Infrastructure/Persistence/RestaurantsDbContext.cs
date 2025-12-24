@@ -12,7 +12,7 @@ namespace Restaurants.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+           
 
             modelBuilder.Entity<Restaurant>()
                                 .OwnsOne(r => r.Address);
@@ -21,6 +21,12 @@ namespace Restaurants.Infrastructure.Persistence
                 .HasMany(r => r.Dishes)
                 .WithOne()
                 .HasForeignKey(d => d.RestaurantId);
+
+            modelBuilder.Entity<Dish>()
+                .Property(d => d.Price)
+                .HasPrecision(18, 2);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -12,8 +12,8 @@ using Restaurants.Infrastructure.Persistence;
 namespace Restaurants.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantsDbContext))]
-    [Migration("20251017122422_updateDescriptionSplling")]
-    partial class updateDescriptionSplling
+    [Migration("20251106124736_InitialAdd")]
+    partial class InitialAdd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,7 @@ namespace Restaurants.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RestaurantId")
@@ -108,6 +109,7 @@ namespace Restaurants.Infrastructure.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<string>("City")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("PostalCode")
