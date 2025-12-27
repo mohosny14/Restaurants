@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v4
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v5.0.1
         with:
@@ -45,6 +45,6 @@ jobs:
           uses: Azure/webapps-deploy@v3
           with:
             # Name of the Azure Web App
-            app-name: MoRestaurants-api-dev
+            app-name: 'MoRestaurants-api-dev'
             # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
             publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
