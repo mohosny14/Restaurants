@@ -4,6 +4,7 @@ using Restaurants.Application;
 using Restaurants.Application.Restaurants.Commands.CreateRestaurant;
 using Restaurants.Application.Restaurants.Commands.DeleteRestaurant;
 using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
+using Restaurants.Application.Restaurants.Commands.UploadRestaurantLogos;
 using Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
 using Restaurants.Application.Restaurants.Queries.GetRestaurantById;
 
@@ -57,6 +58,21 @@ namespace Restaurants.API.Controllers
         {
             await _mediator.Send(command);
 
+            return NoContent();
+        }
+
+        [HttpPost("{id}/logo")]
+        public async Task<IActionResult> UploadLogo(int id, IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            var command = new UploadRestaurantLogoCommand()
+            {
+                RestaurantId = id,
+                FileName = file.FileName,
+                File = stream,
+            };
+
+            await _mediator.Send(command);
             return NoContent();
         }
     }

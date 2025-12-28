@@ -22,5 +22,6 @@ public class UpdateRestaurantCommandHandler : IRequestHandler<UpdateRestaurantCo
         UpdateRestaurantCommand.MapUpdateRequestToRestaurant(restaurant, request);
         // Save changes
         await _restaurantsRepository.UpdateRestaurant(restaurant);
+        await _restaurantsRepository.SaveChanges();
     }
 }

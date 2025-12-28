@@ -9,5 +9,6 @@ namespace Restaurants.Domain.IRepositories
         public Task<int> CreateRestaurant(Restaurant restaurant);
         public Task<bool> DeleteRestaurant(Restaurant restaurant);
         public Task<bool> UpdateRestaurant(Restaurant restaurant);
+        Task SaveChanges();
     }
 }
