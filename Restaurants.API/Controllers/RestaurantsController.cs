@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Restaurants.Application;
 using Restaurants.Application.Restaurants.Commands.CreateRestaurant;
 using Restaurants.Application.Restaurants.Commands.DeleteRestaurant;
+using Restaurants.Application.Restaurants.Commands.Dtos.Restaurants;
 using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
 using Restaurants.Application.Restaurants.Commands.UploadRestaurantLogos;
 using Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
@@ -51,7 +51,7 @@ namespace Restaurants.API.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(nameof(GetById), new { id = 0 }, null);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
         }
         [HttpPatch]
         public async Task<IActionResult> UpdateRestaurant([FromBody] UpdateRestaurantCommand command)

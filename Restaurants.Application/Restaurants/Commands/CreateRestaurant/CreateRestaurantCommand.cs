@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Restaurants.Application.Dtos.Dish;
+using Restaurants.Application.Dishes.Dtos;
 using Restaurants.Domain.Entities;
 
 namespace Restaurants.Application.Restaurants.Commands.CreateRestaurant;

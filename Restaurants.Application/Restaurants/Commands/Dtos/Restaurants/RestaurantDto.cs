@@ -1,6 +1,7 @@
-﻿using Restaurants.Domain.Entities;
+﻿using Restaurants.Application.Dishes.Dtos;
+using Restaurants.Domain.Entities;
 
-namespace Restaurants.Application;
+namespace Restaurants.Application.Restaurants.Commands.Dtos.Restaurants;
 
 public class RestaurantDto
 {
@@ -13,6 +14,7 @@ public class RestaurantDto
     public string? Street { get; set; }
     public string? PostalCode { get; set; }
     public List<DishDto> Dishes { get; set; } = [];
+    public string? LogoSasUrl { get; set; }
 
     public static RestaurantDto? MapRestaurantToDto(Restaurant? restaurant)
     {

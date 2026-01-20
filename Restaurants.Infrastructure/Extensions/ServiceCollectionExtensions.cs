@@ -32,6 +32,7 @@ namespace Restaurants.Infrastructure.Extensions
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
             services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
+            services.AddScoped<IDishesRepository, DishesRepository>();
             services.AddScoped<IBlobStorageService, BlobStorageService>();
 
             services.Configure<BlobStorageSettings>(configuration.GetSection("BlobStorage"));
