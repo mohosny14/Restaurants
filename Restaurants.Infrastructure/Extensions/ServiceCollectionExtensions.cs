@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Restaurants.Domain.Entities;
 using Restaurants.Domain.Interfaces;
 using Restaurants.Domain.IRepositories;
 using Restaurants.Infrastructure.Configuration;
@@ -29,6 +30,8 @@ namespace Restaurants.Infrastructure.Extensions
                     options.EnableSensitiveDataLogging();
                 }
             });
+            services.AddIdentityApiEndpoints<User>()
+                .AddEntityFrameworkStores<RestaurantsDbContext>();
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
             services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();

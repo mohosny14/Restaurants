@@ -2,6 +2,7 @@
 
 ### Get all restaurants
 GET {{Restaurants.API_HostAddress}}/api/restaurants
+### Authorization: Bearer {{token}}
 
 ### Get a specific restaurant by ID
 GET {{Restaurants.API_HostAddress}}/api/restaurants/13
@@ -68,4 +69,20 @@ Content-Type: application/json
         "kiloCalories": 330
 }
   ]
+}
+
+  ### Create a new user
+POST {{Restaurants.API_HostAddress}}/register
+Content-Type: application/json
+{
+    "email": "testuser@test.com",
+    "password": "Password1!"
+}
+
+          ### Create a new user
+POST {{Restaurants.API_HostAddress}}/login
+Content-Type: application/json
+{
+    "email": "testuser@test.com",
+    "password": "Password1!"
 }
