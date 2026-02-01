@@ -15,32 +15,36 @@ namespace Restaurants.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             //services.AddDbContext<RestaurantsDbContext>(options =>
             //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             //    .EnableSensitiveDataLogging());
 
-            services.AddDbContext<RestaurantsDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            //services.AddDbContext<RestaurantsDbContext>(options =>
+            //{
+            //    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 
-                if (environment.IsDevelopment())
-                {
-                    options.EnableSensitiveDataLogging();
-                }
-            });
+            //    if (environment.IsDevelopment())
+            //    {
+            //        options.EnableSensitiveDataLogging();
+            //    }
+            //});
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<RestaurantsDbContext>(options =>
+                options.UseSqlServer(connectionString)
+                    .EnableSensitiveDataLogging());
+
             services.AddIdentityApiEndpoints<User>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>();
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
             services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
             services.AddScoped<IDishesRepository, DishesRepository>();
-            services.AddScoped<IBlobStorageService, BlobStorageService>();
 
             services.Configure<BlobStorageSettings>(configuration.GetSection("BlobStorage"));
-
-            return services;
+            services.AddScoped<IBlobStorageService, BlobStorageService>();
         }
     }
 }

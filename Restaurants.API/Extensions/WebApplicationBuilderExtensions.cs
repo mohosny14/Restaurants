@@ -35,7 +35,6 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddScoped<RequestTimeLoggingMiddleware>();
 
         builder.Host.UseSerilog((context, configuration) =>
-        configuration
-            .ReadFrom.Configuration(context.Configuration));
+        configuration.ReadFrom.Configuration(context.Configuration));
     }
 }

@@ -16,7 +16,7 @@ try
 
     builder.AddPresentation();
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(builder.Configuration,builder.Environment);
+    builder.Services.AddInfrastructure(builder.Configuration);
 
 
     // );
@@ -37,6 +37,7 @@ try
     app.UseSerilogRequestLogging();
     if (app.Environment.IsDevelopment())
     {
+        app.UseDeveloperExceptionPage(); // for enable exceptions in local to see the errors correct!
         app.UseSwagger();
         app.UseSwaggerUI();
     }

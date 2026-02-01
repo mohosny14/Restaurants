@@ -21,13 +21,13 @@ public class DishesController(IMediator mediator) : ControllerBase
         return Ok(dishes);
     }
     // TODO:
-    [HttpGet]
-    public async Task<IActionResult> GetDishByIdForRestaurant([FromRoute] int restaurantId, [FromRoute] int dishId)
-    {
-        // Implementation to get all dishes for a specific restaurant
-        var dishes = await mediator.Send(new GetDishesForRestaurantQuery(restaurantId));
-        return Ok(dishes);
-    }
+    //[HttpGet]
+    //public async Task<IActionResult> GetDishByIdForRestaurant([FromRoute] int restaurantId, [FromRoute] int dishId)
+    //{
+    //    // Implementation to get all dishes for a specific restaurant
+    //    var dishes = await mediator.Send(new GetDishesForRestaurantQuery(restaurantId));
+    //    return Ok(dishes);
+    //}
 
     [HttpPost]
     public async Task<IActionResult> CreateDishForRestaurant([FromRoute] int restaurantId, CreateDishCommand command)
