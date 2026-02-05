@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Restaurants.Domain.Entities;
 using Restaurants.Domain.Interfaces;
 using Restaurants.Domain.IRepositories;
+using Restaurants.Infrastructure.Authorization;
+using Restaurants.Infrastructure.Authorization.Requirements;
 using Restaurants.Infrastructure.Configuration;
 using Restaurants.Infrastructure.Persistence;
 using Restaurants.Infrastructure.Repositories;
@@ -39,6 +42,7 @@ namespace Restaurants.Infrastructure.Extensions
 
             services.AddIdentityApiEndpoints<User>()
                 .AddRoles<IdentityRole>()
+                .AddClaimsPrincipalFactory<RestaurantsUserClaimsPrincipalFactory>()
                 .AddEntityFrameworkStores<RestaurantsDbContext>();
 
             services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
@@ -47,6 +51,12 @@ namespace Restaurants.Infrastructure.Extensions
 
             services.Configure<BlobStorageSettings>(configuration.GetSection("BlobStorage"));
             services.AddScoped<IBlobStorageService, BlobStorageService>();
+            services.AddAuthorizationBuilder()
+                .AddPolicy(PolicyNames.HasNationality, builder => builder.RequireClaim(AppCliamTypes.Nationality))
+                //.AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality","Egypt","India")); // another overload for specific values
+                .AddPolicy(PolicyNames.AtLeast20, builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
+
+            services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>(); // sepcific authorization
         }
     }
 }
