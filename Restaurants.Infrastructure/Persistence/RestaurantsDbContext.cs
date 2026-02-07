@@ -27,6 +27,11 @@ namespace Restaurants.Infrastructure.Persistence
                 .Property(d => d.Price)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<User>()
+                .HasMany(o => o.OwnedRestaurants)
+                .WithOne(r => r.Owner)
+                .HasForeignKey(u => u.OwnerId);
+
             base.OnModelCreating(modelBuilder);
         }
     }

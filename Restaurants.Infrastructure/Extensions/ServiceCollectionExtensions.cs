@@ -9,6 +9,7 @@ using Restaurants.Domain.Interfaces;
 using Restaurants.Domain.IRepositories;
 using Restaurants.Infrastructure.Authorization;
 using Restaurants.Infrastructure.Authorization.Requirements;
+using Restaurants.Infrastructure.Authorization.Services;
 using Restaurants.Infrastructure.Configuration;
 using Restaurants.Infrastructure.Persistence;
 using Restaurants.Infrastructure.Repositories;
@@ -57,6 +58,8 @@ namespace Restaurants.Infrastructure.Extensions
                 .AddPolicy(PolicyNames.AtLeast20, builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
 
             services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>(); // sepcific authorization
+
+            services.AddScoped<IRestaurantAuthorizationService, RestaurantAuthorizationService>();
         }
     }
 }
