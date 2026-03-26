@@ -1,97 +1,52 @@
 name: restaurants-api-cd
 
-on:
+on: 
   push:
-    branches:
+    branches: 
       - master
   workflow_dispatch:
-
-env:
-  DOTNET_VERSION: '8.0.x'
-  PROJECT_PATH: './src/Restaurants.API/Restaurants.API.csproj'
-  PUBLISH_DIR: './publish_output'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Cache لتحسين الأداء
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4 # تحديث للإصدار المستقر
         with:
-          path: ~/.nuget/packages
-          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            nuget-${{ runner.os }}-
+          dotnet-version: 8.0.x
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Restore
-        run: dotnet restore ${{ env.PROJECT_PATH }}
+      - name: Restore dependencies
+        run: dotnet restore
 
       - name: Build
-        run: dotnet build ${{ env.PROJECT_PATH }} --no-restore -c Release
+        run: dotnet build --no-restore -c Release
 
       - name: Publish
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_DIR }} --no-build
+        # قمنا بتغيير المسار لمجلد مؤقت لضمان نظافة الملفات
+        run: dotnet publish ./Restaurants.API/Restaurants.API.csproj -o ./publish_output --no-build
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4 # v4 هي الأحدث حالياً ومستقرة
         with:
           name: api-artifact
-          path: ${{ env.PUBLISH_DIR }}
+          path: ./publish_output
 
-  # ================= DEV =================
   deploy-dev:
-    runs-on: ubuntu-latest
-    needs: build
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+        - name: Download a Build Artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: api-artifact
+            path: ./web_package # تنزيل الملفات في مجلد محدد
 
-    environment:
-      name: Dev
-      url: ${{ steps.deploy.outputs.webapp-url }}
-
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: api-artifact
-          path: ./package
-
-      - name: Deploy to Azure Dev
-        id: deploy
-        uses: Azure/webapps-deploy@v3
-        with:
-          app-name: 'restaurants-api-dev'
-          publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
-          package: ./package
-
-  # ================= PROD =================
-  deploy-prod:
-    runs-on: ubuntu-latest
-    needs: deploy-dev
-
-    environment:
-      name: Prod
-      url: ${{ steps.deploy.outputs.webapp-url }}
-
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: api-artifact
-          path: ./package
-
-      - name: Deploy to Azure Prod
-        id: deploy
-        uses: Azure/webapps-deploy@v3
-        with:
-          app-name: 'restaurants-api-prod'
-          publish-profile: ${{ secrets.PUBLISH_PROFILE_PROD }}
-          package: ./package
+        - name: Azure WebApp
+          uses: Azure/webapps-deploy@v3
+          with:
+            app-name: 'MoRestaurants-api-dev'
+            publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
+            package: ./web_package # تحديد المجلد الذي يحتوي على الملفات المنشورة
