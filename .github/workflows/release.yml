@@ -1,52 +1,66 @@
-name: restaurants-api-cd
+name: restaurats-api-cd
 
-on: 
+on:
   push:
     branches: 
-      - master
+    - master
   workflow_dispatch:
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v4.1.1
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v4 # تحديث للإصدار المستقر
+        uses: actions/setup-dotnet@v4.0.0
         with:
           dotnet-version: 8.0.x
-
       - name: Restore dependencies
         run: dotnet restore
-
-      - name: Build
+      - name:  Build
         run: dotnet build --no-restore -c Release
-
-      - name: Publish
-        # قمنا بتغيير المسار لمجلد مؤقت لضمان نظافة الملفات
-        run: dotnet publish ./Restaurants.API/Restaurants.API.csproj -o ./publish_output --no-build
-
+      - name:  Publish
+        run: dotnet publish ./src/Restaurants.API/Restaurants.API.csproj -o ${{env.DOTNET_ROOT}}/api --no-build
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4 # v4 هي الأحدث حالياً ومستقرة
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: api-artifact
-          path: ./publish_output
-
+          path: ${{env.DOTNET_ROOT}}/api
+        
   deploy-dev:
-      runs-on: ubuntu-latest
-      needs: build
-      steps:
-        - name: Download a Build Artifact
-          uses: actions/download-artifact@v4
-          with:
-            name: api-artifact
-            path: ./web_package # تنزيل الملفات في مجلد محدد
+    environment: 
+      name: 'Dev'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.3
+        with:
+          name: api-artifact
+      - name: Azure WebApp
+        uses: Azure/webapps-deploy@v3.0.0
+        id: deploy-to-webapp
+        with:
+          app-name: 'restaurants-api-dev'
+          publish-profile:  ${{ secrets.PUBLISH_PROFILE_DEV }}
 
-        - name: Azure WebApp
-          uses: Azure/webapps-deploy@v3
-          with:
-            app-name: 'MoRestaurants-api-dev'
-            publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
-            package: ./web_package # تحديد المجلد الذي يحتوي على الملفات المنشورة
+  deploy-prod:
+    environment: 
+      name: 'Prod'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.3
+        with:
+          name: api-artifact
+      - name: Azure WebApp
+        uses: Azure/webapps-deploy@v3.0.0
+        id: deploy-to-webapp
+        with:
+          app-name: 'restaurants-api1-prod'
+          publish-profile:  ${{ secrets.PUBLISH_PROFILE_PROD }}
