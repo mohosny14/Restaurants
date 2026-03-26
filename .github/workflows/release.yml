@@ -1,66 +1,97 @@
-name: restaurats-api-cd
+name: restaurants-api-cd
 
 on:
   push:
-    branches: 
-    - master
+    branches:
+      - master
   workflow_dispatch:
 
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: './src/Restaurants.API/Restaurants.API.csproj'
+  PUBLISH_DIR: './publish_output'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v4.0.0
+        uses: actions/checkout@v4
+
+      # Cache لتحسين الأداء
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
         with:
-          dotnet-version: 8.0.x
-      - name: Restore dependencies
-        run: dotnet restore
-      - name:  Build
-        run: dotnet build --no-restore -c Release
-      - name:  Publish
-        run: dotnet publish ./src/Restaurants.API/Restaurants.API.csproj -o ${{env.DOTNET_ROOT}}/api --no-build
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.1
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} --no-restore -c Release
+
+      - name: Publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_DIR }} --no-build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: api-artifact
-          path: ${{env.DOTNET_ROOT}}/api
-        
+          path: ${{ env.PUBLISH_DIR }}
+
+  # ================= DEV =================
   deploy-dev:
-    environment: 
-      name: 'Dev'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     runs-on: ubuntu-latest
     needs: build
+
+    environment:
+      name: Dev
+      url: ${{ steps.deploy.outputs.webapp-url }}
+
     steps:
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.3
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
         with:
           name: api-artifact
-      - name: Azure WebApp
-        uses: Azure/webapps-deploy@v3.0.0
-        id: deploy-to-webapp
+          path: ./package
+
+      - name: Deploy to Azure Dev
+        id: deploy
+        uses: Azure/webapps-deploy@v3
         with:
           app-name: 'restaurants-api-dev'
-          publish-profile:  ${{ secrets.PUBLISH_PROFILE_DEV }}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
+          package: ./package
 
+  # ================= PROD =================
   deploy-prod:
-    environment: 
-      name: 'Prod'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     runs-on: ubuntu-latest
     needs: deploy-dev
+
+    environment:
+      name: Prod
+      url: ${{ steps.deploy.outputs.webapp-url }}
+
     steps:
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.3
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
         with:
           name: api-artifact
-      - name: Azure WebApp
-        uses: Azure/webapps-deploy@v3.0.0
-        id: deploy-to-webapp
+          path: ./package
+
+      - name: Deploy to Azure Prod
+        id: deploy
+        uses: Azure/webapps-deploy@v3
         with:
-          app-name: 'restaurants-api1-prod'
-          publish-profile:  ${{ secrets.PUBLISH_PROFILE_PROD }}
+          app-name: 'restaurants-api-prod'
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_PROD }}
+          package: ./package
